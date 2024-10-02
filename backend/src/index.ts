@@ -5,17 +5,16 @@ const app = express();
 
 // Используем переменные окружения для порта и доменов фронтенда
 const port = process.env.PORT || 3001;
-
-// Разрешенные источники (локальный и продакшн-домен)
 const allowedOrigins = [
   'http://localhost:3000', // для локальной разработки
-  'https://formcraft-production.up.railway.app', // ваш продакшн-домен
+  process.env.FRONTEND_URL, // ваш продакшн-домен
 ];
 
 // Настраиваем CORS для разрешения запросов с этих доменов
 app.use(
   cors({
     origin: function (origin, callback) {
+      console.log('Запрос с origin:', origin); // Логирование для диагностики
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
