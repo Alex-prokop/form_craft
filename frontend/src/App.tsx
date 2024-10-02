@@ -6,7 +6,9 @@ function App() {
   const [error, setError] = useState<string | null>(null); // Исправление типизации для error
 
   useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_URL;
+    // const apiUrl = import.meta.env.VITE_API_URL;
+    const apiUrl = 'https://formcraftbackend-production.up.railway.app';
+
     console.log('API URL: ', apiUrl); // Выводим API URL
 
     // Проверяем, задан ли URL
