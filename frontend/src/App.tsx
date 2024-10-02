@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 function App() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true); // Для отслеживания состояния загрузки
-  const [error, setError] = useState(null); // Для отслеживания ошибок
+  const [error, setError] = useState<string | null>(null); // Исправление типизации для error
 
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL;
