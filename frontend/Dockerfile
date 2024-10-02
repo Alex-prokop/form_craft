@@ -15,8 +15,15 @@ RUN npm run build
 
 # Используем nginx для раздачи статических файлов
 FROM nginx:alpine
+
+# Копируем сгенерированные файлы фронтенда в директорию Nginx
 COPY --from=build /app/dist /usr/share/nginx/html
 
+# Копируем конфигурацию Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Экспонируем порт
 EXPOSE 80
 
+# Запускаем Nginx
 CMD ["nginx", "-g", "daemon off;"]

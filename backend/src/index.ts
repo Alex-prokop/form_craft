@@ -3,14 +3,25 @@ import cors from 'cors';
 
 const app = express();
 
-// Используем переменную окружения для порта и домена фронтенда
+// Используем переменные окружения для порта и доменов фронтенда
 const port = process.env.PORT || 3001;
-const allowedOrigin = process.env.FRONTEND_URL || 'http://localhost:3000';
 
-// Настраиваем CORS для разрешения запросов
+// Разрешенные источники (локальный и продакшн-домен)
+const allowedOrigins = [
+  'http://localhost:3000', // для локальной разработки
+  'https://formcraft-production.up.railway.app', // ваш продакшн-домен
+];
+
+// Настраиваем CORS для разрешения запросов с этих доменов
 app.use(
   cors({
-    origin: allowedOrigin,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
   })
 );
 
@@ -20,6 +31,8 @@ app.get('/api/message', (req, res) => {
 
 app.listen(port, () => {
   console.log(
-    `Бэкенд запущен на порту ${port}, доступ с домена ${allowedOrigin}`
+    `Бэкенд запущен на порту ${port}, доступ с разрешенных доменов: ${allowedOrigins.join(
+      ', '
+    )}`
   );
 });
