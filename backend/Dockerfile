@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Экспонируем порт
-EXPOSE 3001
+EXPOSE 5000
 
 # Запускаем сервер
 CMD ["node", "dist/index.js"]
