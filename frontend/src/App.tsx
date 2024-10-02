@@ -4,8 +4,8 @@ function App() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    // Используем переменную окружения для URL бэкенда
     const apiUrl = import.meta.env.VITE_API_URL;
+    console.log('API URL: ', apiUrl); // Временно выводим URL
     fetch(`${apiUrl}/api/message`)
       .then((response) => response.json())
       .then((data) => setMessage(data.message))
