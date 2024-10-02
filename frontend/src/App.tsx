@@ -4,8 +4,9 @@ function App() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    // Запрос к бэкенду
-    fetch('http://localhost:3001/api/message')
+    // Используем переменную окружения для URL бэкенда
+    const apiUrl = import.meta.env.VITE_API_URL;
+    fetch(`${apiUrl}/api/message`)
       .then((response) => response.json())
       .then((data) => setMessage(data.message))
       .catch((error) => console.error('Ошибка:', error));
