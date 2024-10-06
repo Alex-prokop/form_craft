@@ -1,18 +1,21 @@
-version: '3.8'
 services:
   backend:
+    build: ./backend
     image: form-craft-backend
     ports:
-      - '3001:3001'
+      - '5001:5000'
     networks:
       - my_network
+    env_file:
+      - ./backend/.env
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3001']
+      test: ['CMD', 'curl', '-f', 'http://localhost:5000']
       interval: 30s
       timeout: 10s
       retries: 3
 
   frontend:
+    build: ./frontend
     image: form-craft-frontend
     ports:
       - '3000:80'
@@ -24,3 +27,8 @@ services:
 networks:
   my_network:
     driver: bridge
+# docker-compose up --build
+
+# http://localhost:5001/api/message
+
+# http://localhost:3000/
