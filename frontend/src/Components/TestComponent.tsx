@@ -66,7 +66,7 @@ const TestComponent: React.FC = () => {
       <h2>{message ? message : 'Нет сообщения'}</h2>
       <h2>
         {dbMessage ? dbMessage : 'Нет данных о подключении к базе данных'}
-      </h2>{' '}
+      </h2>
     </div>
   );
 };

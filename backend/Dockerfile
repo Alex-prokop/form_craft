@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Устанавливаем зависимости
-RUN npm install
+RUN npm install --build-from-source bcrypt
 
 # Копируем весь проект
 COPY . .
@@ -19,5 +19,5 @@ RUN npm run build
 # Экспонируем порт
 EXPOSE 5000
 
-# Запускаем сервер
-CMD ["node", "dist/index.js"]
+# Добавляем команду для выполнения миграций и запуска приложения
+CMD ["sh", "-c", "npm run migration:run && node dist/index.js"]
