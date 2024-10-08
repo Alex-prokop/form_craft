@@ -2,6 +2,7 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerDocument } from './swagger';
 import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
 import messageRoutes from './routes/messageRoutes';
 import { corsMiddleware } from './middlewares/corsMiddleware';
 
@@ -13,6 +14,7 @@ app.use(express.json());
 // Подключение маршрутов:
 app.use('/auth', authRoutes);
 app.use('/api', messageRoutes);
+app.use('/api', userRoutes);
 
 // Подключение Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

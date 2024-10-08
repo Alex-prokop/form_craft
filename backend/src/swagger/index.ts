@@ -11,4 +11,14 @@ export const swaggerDocument = {
     ...authSwagger,
     ...userSwagger,
   },
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    },
+  },
+  security: [{ bearerAuth: [] }],
 };

@@ -3,14 +3,12 @@ import { Role } from '../entities/Role';
 
 export const seedRoles = async () => {
   try {
-    // Проверяем, что соединение уже установлено
     if (!AppDataSource.isInitialized) {
       await AppDataSource.initialize();
     }
 
     const roleRepository = AppDataSource.getRepository(Role);
 
-    // Проверяем существование ролей
     const adminRoleExists = await roleRepository.findOneBy({
       role_name: 'admin',
     });

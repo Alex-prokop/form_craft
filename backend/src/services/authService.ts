@@ -46,7 +46,11 @@ export const register = async (
 
 export const login = async (email: string, password: string) => {
   const userRepository = AppDataSource.getRepository(User);
-  const user = await userRepository.findOneBy({ email });
+
+  const user = await userRepository.findOne({
+    where: { email },
+    relations: ['role'],
+  });
 
   if (!user) {
     throw new Error('Неверный email или пароль');
@@ -56,6 +60,10 @@ export const login = async (email: string, password: string) => {
 
   if (!isPasswordValid) {
     throw new Error('Неверный email или пароль');
+  }
+
+  if (!user.role) {
+    throw new Error('Роль пользователя не найдена');
   }
 
   const token = generateJwtToken(user.id, user.username, user.role.role_name);
