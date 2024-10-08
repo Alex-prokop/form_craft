@@ -7,8 +7,8 @@ const TestComponent: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const apiUrl = 'http://localhost:5001';
-    // const apiUrl = 'https://formcraftbackend-production.up.railway.app';
+    // const apiUrl = 'http://localhost:5001';
+    const apiUrl = 'https://formcraftbackend-production.up.railway.app';
 
     console.log('API URL: ', apiUrl);
 
