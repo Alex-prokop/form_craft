@@ -1,71 +1,77 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { AppDataSource } from '../config/ormconfig';
-import { User } from '../entities/User';
-import { Role } from '../entities/Role';
-import { generateJwtToken } from '../utils/jwtUtils';
+// import bcrypt from 'bcryptjs';
+// import {
+//   findUserByUsername,
+//   findUserByEmail,
+//   createUser,
+//   findUserWithRoleByEmail,
+// } from '../repositories/userRepository';
+// import { findRoleByName } from '../repositories/roleRepository';
+// import { generateJwtToken } from '../utils/jwtUtils';
 
-export const register = async (
-  username: string,
-  email: string,
-  password: string
-) => {
-  const userRepository = AppDataSource.getRepository(User);
-  const roleRepository = AppDataSource.getRepository(Role);
+// // Кастомные ошибки
+// class UserExistsError extends Error {
+//   constructor(message: string) {
+//     super(message);
+//     this.name = 'UserExistsError';
+//   }
+// }
 
-  const existingUser = await userRepository.findOneBy({ username });
-  const existingEmail = await userRepository.findOneBy({ email });
+// class InvalidCredentialsError extends Error {
+//   constructor(message: string) {
+//     super(message);
+//     this.name = 'InvalidCredentialsError';
+//   }
+// }
 
-  if (existingUser || existingEmail) {
-    throw new Error('Пользователь или email уже заняты');
-  }
+// export const register = async (
+//   username: string,
+//   email: string,
+//   password: string
+// ) => {
+//   // Проверяем наличие пользователя или email
+//   const existingUser = await findUserByUsername(username);
+//   const existingEmail = await findUserByEmail(email);
 
-  if (password.length < 6) {
-    throw new Error('Пароль должен содержать не менее 6 символов');
-  }
+//   if (existingUser || existingEmail) {
+//     throw new UserExistsError('Пользователь или email уже заняты');
+//   }
 
-  const password_hash = await bcrypt.hash(password, 10);
-  const userRole = await roleRepository.findOneBy({ role_name: 'user' });
+//   if (password.length < 6) {
+//     throw new Error('Пароль должен содержать не менее 6 символов');
+//   }
 
-  console.log('Найденная роль:', userRole);
-  if (!userRole) {
-    throw new Error('Роль "user" не найдена в базе данных');
-  }
+//   const password_hash = await bcrypt.hash(password, 10);
+//   const userRole = await findRoleByName('user');
 
-  const newUser = userRepository.create({
-    username,
-    email,
-    password_hash,
-    role: userRole,
-  });
+//   if (!userRole) {
+//     throw new Error('Роль "user" не найдена в базе данных');
+//   }
 
-  await userRepository.save(newUser);
+//   // Создаем нового пользователя через репозиторий
+//   const newUser = await createUser({
+//     username,
+//     email,
+//     password_hash,
+//     role: userRole,
+//   });
 
-  return { message: 'Пользователь успешно зарегистрирован', user: newUser };
-};
+//   return { message: 'Пользователь успешно зарегистрирован', user: newUser };
+// };
 
-export const login = async (email: string, password: string) => {
-  const userRepository = AppDataSource.getRepository(User);
+// export const login = async (email: string, password: string) => {
+//   // Находим пользователя и роль через репозиторий
+//   const user = await findUserWithRoleByEmail(email);
 
-  const user = await userRepository.findOne({
-    where: { email },
-    relations: ['role'],
-  });
+//   if (!user) {
+//     throw new InvalidCredentialsError('Неверный email или пароль');
+//   }
 
-  if (!user) {
-    throw new Error('Неверный email или пароль');
-  }
+//   const isPasswordValid = await bcrypt.compare(password, user.password_hash);
 
-  const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+//   if (!isPasswordValid) {
+//     throw new InvalidCredentialsError('Неверный email или пароль');
+//   }
 
-  if (!isPasswordValid) {
-    throw new Error('Неверный email или пароль');
-  }
-
-  if (!user.role) {
-    throw new Error('Роль пользователя не найдена');
-  }
-
-  const token = generateJwtToken(user.id, user.username, user.role.role_name);
-  return { message: 'Аутентификация успешна', token };
-};
+//   const token = generateJwtToken(user.id, user.username, user.role.role_name);
+//   return { message: 'Аутентификация успешна', token };
+// };

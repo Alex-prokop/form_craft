@@ -9,16 +9,12 @@ import { authMiddleware } from '../middlewares/authMiddleware';
 
 const router = Router();
 
-// Получение всех пользователей (для администраторов)
-router.get('/users', authMiddleware, getAllUsers);
+router.get('/', authMiddleware, getAllUsers);
 
-// Получение пользователя по ID
-router.get('/users/:id', authMiddleware, getUserById);
+router.get('/:id', authMiddleware, getUserById);
 
-// Обновление пользователя
-router.put('/users/:id', authMiddleware, updateUser);
+router.put('/:id', authMiddleware, updateUser);
 
-// Удаление пользователя
-router.delete('/users/:id', authMiddleware, deleteUser);
+router.delete('/:id', authMiddleware, deleteUser);
 
 export default router;

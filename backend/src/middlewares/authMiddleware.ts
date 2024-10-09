@@ -2,16 +2,23 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { User } from '../entities/User';
 
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request {
   user?: User;
 }
+
+const parseToken = (authHeader: string | undefined): string | null => {
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    return authHeader.split(' ')[1];
+  }
+  return null;
+};
 
 export const authMiddleware = (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.headers.authorization?.split(' ')[1];
+  const token = parseToken(req.headers.authorization);
 
   if (!token) {
     return res
@@ -24,6 +31,9 @@ export const authMiddleware = (
     req.user = decoded;
     next();
   } catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+      return res.status(401).json({ message: 'Токен истек' });
+    }
     return res.status(401).json({ message: 'Неверный токен' });
   }
 };
