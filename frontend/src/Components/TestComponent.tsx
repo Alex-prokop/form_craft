@@ -2,13 +2,17 @@ import React, { useEffect, useState } from 'react';
 
 const TestComponent: React.FC = () => {
   const [message, setMessage] = useState('');
-  const [dbMessage, setDbMessage] = useState(''); // Для сообщения о статусе базы данных
+  const [dbMessage, setDbMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // const apiUrl = 'http://localhost:5001';
-    const apiUrl = 'https://formcraftbackend-production.up.railway.app';
+    const primaryApiUrl = 'https://formcraftbackend-production.up.railway.app';
+    const fallbackApiUrl = 'http://localhost:5001';
+
+    // const apiUrl = 'https://formcraftbackend-production.up.railway.app';
+
+    const apiUrl = primaryApiUrl || fallbackApiUrl;
 
     console.log('API URL: ', apiUrl);
 
