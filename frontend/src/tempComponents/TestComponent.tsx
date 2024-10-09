@@ -2,17 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 const TestComponent: React.FC = () => {
   const [message, setMessage] = useState('');
-  const [dbMessage, setDbMessage] = useState('');
+  const [dbMessage, setDbMessage] = useState(''); // Для сообщения о статусе базы данных
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // const primaryApiUrl = 'https://formcraftbackend-production.up.railway.app';
-    // const fallbackApiUrl = 'http://localhost:5001';
-
+    // const apiUrl = 'http://localhost:5001';
     const apiUrl = 'https://formcraftbackend-production.up.railway.app';
-
-    // const apiUrl = primaryApiUrl || fallbackApiUrl;
 
     console.log('API URL: ', apiUrl);
 
@@ -23,7 +19,8 @@ const TestComponent: React.FC = () => {
       return;
     }
 
-    fetch(`${apiUrl}/api/message`)
+    // Обновление пути к маршруту message
+    fetch(`${apiUrl}/api/messages/message`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Ошибка HTTP: ${response.status}`);
@@ -39,7 +36,8 @@ const TestComponent: React.FC = () => {
         setError(error.message);
       });
 
-    fetch(`${apiUrl}/api/test-db`)
+    // Обновление пути к маршруту test-db
+    fetch(`${apiUrl}/api/messages/test-db`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Ошибка HTTP: ${response.status}`);

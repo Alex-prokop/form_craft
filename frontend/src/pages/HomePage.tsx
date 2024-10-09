@@ -1,5 +1,5 @@
 import React from 'react';
-import TestComponent from '../components/TestComponent';
+import TestComponent from '../tempComponents/TestComponent';
 
 const HomePage: React.FC = () => {
   return (
