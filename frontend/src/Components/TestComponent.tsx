@@ -7,12 +7,12 @@ const TestComponent: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const primaryApiUrl = 'https://formcraftbackend-production.up.railway.app';
-    const fallbackApiUrl = 'http://localhost:5001';
+    // const primaryApiUrl = 'https://formcraftbackend-production.up.railway.app';
+    // const fallbackApiUrl = 'http://localhost:5001';
 
-    // const apiUrl = 'https://formcraftbackend-production.up.railway.app';
+    const apiUrl = 'https://formcraftbackend-production.up.railway.app';
 
-    const apiUrl = primaryApiUrl || fallbackApiUrl;
+    // const apiUrl = primaryApiUrl || fallbackApiUrl;
 
     console.log('API URL: ', apiUrl);
 
