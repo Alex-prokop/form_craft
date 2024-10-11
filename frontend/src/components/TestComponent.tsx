@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '../constants';
+import LoadingPage from '../pages/LoadingPage';
+import ErrorPage from '../pages/ErrorPage';
 
 const TestComponent: React.FC = () => {
   const [message, setMessage] = useState('');
@@ -8,12 +11,9 @@ const TestComponent: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // const apiUrl = 'http://localhost:5001';
-    const apiUrl = import.meta.env.VITE_API_URL;
+    console.log('API URL: ', API_URL);
 
-    console.log('API URL: ', apiUrl);
-
-    if (!apiUrl) {
+    if (!API_URL) {
       console.error('VITE_API_URL не задан');
       setError('API URL не задан');
       setLoading(false);
@@ -22,7 +22,7 @@ const TestComponent: React.FC = () => {
 
     // Запрос к маршруту message
     axios
-      .get(`${apiUrl}/api/messages/message`)
+      .get(`${API_URL}/api/messages/message`)
       .then((response) => {
         console.log('Полученные данные:', response.data);
         setMessage(response.data.message);
@@ -34,7 +34,7 @@ const TestComponent: React.FC = () => {
 
     // Запрос к маршруту test-db
     axios
-      .get(`${apiUrl}/api/messages/test-db`)
+      .get(`${API_URL}/api/messages/test-db`)
       .then((response) => {
         console.log('Статус базы данных:', response.data);
         setDbMessage(response.data.message);
@@ -47,11 +47,11 @@ const TestComponent: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <h1>Загрузка...</h1>;
+    return <LoadingPage />;
   }
 
   if (error) {
-    return <h1>Ошибка: {error}</h1>;
+    return <ErrorPage message={error} />;
   }
 
   return (

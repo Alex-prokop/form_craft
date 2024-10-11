@@ -15,11 +15,10 @@ export const useRegisterForm = () => {
 
   const onSubmit = async (data: RegisterFormInputs) => {
     try {
-      console.log('Отправка данных:', data); // Проверим, что данные отправляются
+      console.log('Отправка данных:', data);
       const response = await registerUser(data);
-      console.log('Успешная регистрация:', response); // Убедимся, что регистрация успешна
+      console.log('Успешная регистрация:', response);
 
-      // Перенаправление
       console.log('Перенаправление на /user');
       navigate('/user');
     } catch (error) {

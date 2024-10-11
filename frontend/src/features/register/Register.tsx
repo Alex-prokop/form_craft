@@ -1,4 +1,3 @@
-// features/register/Register.tsx
 import React from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { RegisterForm } from './ui/RegisterForm';

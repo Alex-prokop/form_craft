@@ -1,4 +1,3 @@
-// features/register/ui/RegisterForm.tsx
 import React from 'react';
 import { useRegisterForm } from '../logic/useRegisterForm';
 
