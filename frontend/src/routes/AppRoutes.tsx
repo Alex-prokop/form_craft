@@ -8,6 +8,9 @@ import AdminDashboard from '../pages/AdminDashboard';
 import TemplateCreatePage from '../pages/TemplateCreatePage';
 import FormFillPage from '../pages/FormFillPage';
 import FormResultsPage from '../pages/FormResultsPage';
+import NotFoundPage from '../pages/NotFoundPage';
+import ErrorPage from '../pages/ErrorPage';
+import LoadingPage from '../pages/LoadingPage';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -20,6 +23,9 @@ const AppRoutes: React.FC = () => {
       <Route path="/template/create" element={<TemplateCreatePage />} />
       <Route path="/form/:id" element={<FormFillPage />} />
       <Route path="/form/:id/results" element={<FormResultsPage />} />
+      <Route path="/error" element={<ErrorPage />} />
+      <Route path="/loading" element={<LoadingPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };

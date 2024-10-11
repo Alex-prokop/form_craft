@@ -7,6 +7,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 const Header: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const { t } = useTranslation();
+
   return (
     <header>
       <nav
@@ -30,7 +31,9 @@ const Header: React.FC = () => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <button className="btn btn-link nav-link" onClick={toggleTheme}>
+                <button
+                  className="btn btn-outline-secondary nav-link"
+                  onClick={toggleTheme}>
                   {theme === 'light' ? t('switchTheme') : t('switchTheme')}
                 </button>
               </li>
@@ -38,17 +41,17 @@ const Header: React.FC = () => {
                 <LanguageSwitcher />
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/">
+                <Link className="btn btn-primary nav-link me-2" to="/">
                   {t('home')}
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/login">
+                <Link className="btn btn-secondary nav-link me-2" to="/login">
                   {t('login')}
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/register">
+                <Link className="btn btn-success nav-link" to="/register">
                   {t('register')}
                 </Link>
               </li>

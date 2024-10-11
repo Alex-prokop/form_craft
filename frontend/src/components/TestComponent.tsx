@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const TestComponent: React.FC = () => {
   const [message, setMessage] = useState('');
-  const [dbMessage, setDbMessage] = useState(''); // Для сообщения о статусе базы данных
+  const [dbMessage, setDbMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // const apiUrl = 'http://localhost:5001';
-    const apiUrl = 'https://formcraftbackend-production.up.railway.app';
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     console.log('API URL: ', apiUrl);
 
@@ -19,34 +20,24 @@ const TestComponent: React.FC = () => {
       return;
     }
 
-    // Обновление пути к маршруту message
-    fetch(`${apiUrl}/api/messages/message`)
+    // Запрос к маршруту message
+    axios
+      .get(`${apiUrl}/api/messages/message`)
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Ошибка HTTP: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log('Полученные данные:', data);
-        setMessage(data.message);
+        console.log('Полученные данные:', response.data);
+        setMessage(response.data.message);
       })
       .catch((error) => {
         console.error('Ошибка при получении данных:', error);
         setError(error.message);
       });
 
-    // Обновление пути к маршруту test-db
-    fetch(`${apiUrl}/api/messages/test-db`)
+    // Запрос к маршруту test-db
+    axios
+      .get(`${apiUrl}/api/messages/test-db`)
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Ошибка HTTP: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log('Статус базы данных:', data);
-        setDbMessage(data.message);
+        console.log('Статус базы данных:', response.data);
+        setDbMessage(response.data.message);
       })
       .catch((error) => {
         console.error('Ошибка при подключении к базе данных:', error);

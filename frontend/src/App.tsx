@@ -6,6 +6,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n/i18n';
+import ErrorBoundary from './components/error/ErrorBoundary';
 
 const App: React.FC = () => {
   return (
@@ -13,9 +14,11 @@ const App: React.FC = () => {
       <ThemeProvider>
         <LanguageProvider>
           <Router>
-            <Layout>
-              <AppRoutes />
-            </Layout>
+            <ErrorBoundary>
+              <Layout>
+                <AppRoutes />
+              </Layout>
+            </ErrorBoundary>
           </Router>
         </LanguageProvider>
       </ThemeProvider>
