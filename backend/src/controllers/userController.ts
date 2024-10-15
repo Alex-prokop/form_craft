@@ -8,7 +8,7 @@ import {
 } from '../services/userService';
 
 export const getAllUsers = async (req: AuthenticatedRequest, res: Response) => {
-  if (req.user?.role.role_name !== 'admin') {
+  if (req.user?.role !== 'admin') {
     return res.status(403).json({ message: 'Доступ запрещен' });
   }
 
@@ -23,7 +23,7 @@ export const getAllUsers = async (req: AuthenticatedRequest, res: Response) => {
 export const getUserById = async (req: AuthenticatedRequest, res: Response) => {
   const userId = parseInt(req.params.id);
 
-  if (req.user?.role.role_name !== 'admin' && req.user?.id !== userId) {
+  if (req.user?.role !== 'admin' && req.user?.id !== userId) {
     return res.status(403).json({ message: 'Доступ запрещен' });
   }
 
@@ -43,7 +43,7 @@ export const getUserById = async (req: AuthenticatedRequest, res: Response) => {
 export const updateUser = async (req: AuthenticatedRequest, res: Response) => {
   const userId = parseInt(req.params.id);
 
-  if (req.user?.role.role_name !== 'admin' && req.user?.id !== userId) {
+  if (req.user?.role !== 'admin' && req.user?.id !== userId) {
     return res.status(403).json({ message: 'Доступ запрещен' });
   }
 
@@ -60,7 +60,7 @@ export const updateUser = async (req: AuthenticatedRequest, res: Response) => {
 export const deleteUser = async (req: AuthenticatedRequest, res: Response) => {
   const userId = parseInt(req.params.id);
 
-  if (req.user?.role.role_name !== 'admin') {
+  if (req.user?.role !== 'admin') {
     return res.status(403).json({ message: 'Доступ запрещен' });
   }
 

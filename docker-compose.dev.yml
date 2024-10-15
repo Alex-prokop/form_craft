@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  backend:
+    build: ./backend
+    image: form-craft-backend
+    command: npm run dev
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    ports:
+      - '5001:5000'
+    networks:
+      - my_network
+    env_file:
+      - ./backend/.env
+    environment:
+      - NODE_ENV=development
+
+  frontend:
+    build: ./frontend
+    image: form-craft-frontend
+    command: npm run dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - '3000:80'
+    environment:
+      - VITE_API_URL=http://localhost:5001
+    networks:
+      - my_network
+    depends_on:
+      - backend
+
+networks:
+  my_network:
+    driver: bridge
+# запустить их в фоновом режиме
+# docker-compose -f docker-compose.dev.yml up -d
+
+# пересобрать контейнеры перед запуском
+# docker-compose -f docker-compose.dev.yml up --build -d
+
+# остановить и удалить контейнеры
+# docker-compose -f docker-compose.dev.yml down

@@ -2,12 +2,24 @@ import React from 'react';
 import { useLoginForm } from '../logic/useLoginForm';
 import { loginUser } from '../api/loginApi';
 import { LoginFormInputs } from '../types/LoginFormInputs';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginForm: React.FC = () => {
   const { register, handleSubmit, errors } = useLoginForm();
+  const navigate = useNavigate();
 
-  const onSubmit = (data: LoginFormInputs) => {
-    loginUser(data);
+  const onSubmit = async (data: LoginFormInputs) => {
+    try {
+      const role = await loginUser(data);
+
+      if (role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/user');
+      }
+    } catch (error) {
+      console.error('Login failed', error);
+    }
   };
 
   return (
@@ -23,6 +35,7 @@ export const LoginForm: React.FC = () => {
           id="email"
           type="email"
           className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+          defaultValue="admin@example.com" // Значение по умолчанию
           {...register('email', {
             required: 'Email is required',
             pattern: {
@@ -44,6 +57,7 @@ export const LoginForm: React.FC = () => {
           id="password"
           type="password"
           className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+          defaultValue="adminPassword123" // Значение по умолчанию
           {...register('password', { required: 'Password is required' })}
         />
         {errors.password && (

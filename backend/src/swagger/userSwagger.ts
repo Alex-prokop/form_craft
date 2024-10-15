@@ -1,5 +1,5 @@
 export const userSwagger = {
-  '/users': {
+  '/api/users': {
     get: {
       summary: 'Получение списка пользователей',
       tags: ['Users'],
@@ -43,7 +43,7 @@ export const userSwagger = {
       },
     },
   },
-  '/users/{id}': {
+  '/api/users/{id}': {
     get: {
       summary: 'Получение пользователя по ID',
       tags: ['Users'],

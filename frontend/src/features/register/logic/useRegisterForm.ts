@@ -1,4 +1,3 @@
-// features/register/logic/useRegisterForm.ts
 import { useForm } from 'react-hook-form';
 import { RegisterFormInputs } from '../types/RegisterFormInputs';
 import { registerUser } from '../api/registerApi';
