@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { User } from '../entities/User';
 
 export interface AuthenticatedRequest extends Request {
-  user?: User;
+  user?: { id: number; role: string };
 }
 
+// Вспомогательная функция для извлечения токена
 const parseToken = (authHeader: string | undefined): string | null => {
   if (authHeader && authHeader.startsWith('Bearer ')) {
     return authHeader.split(' ')[1];
@@ -27,13 +27,20 @@ export const authMiddleware = (
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as User;
-    req.user = decoded;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+      id: number;
+      role: string;
+    };
+
+    req.user = { id: decoded.id, role: decoded.role };
+
     next();
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
       return res.status(401).json({ message: 'Токен истек' });
+    } else if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({ message: 'Неверный токен' });
     }
-    return res.status(401).json({ message: 'Неверный токен' });
+    next(error);
   }
 };

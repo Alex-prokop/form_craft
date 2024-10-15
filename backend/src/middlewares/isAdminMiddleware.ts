@@ -6,8 +6,10 @@ export const isAdmin = (
   res: Response,
   next: NextFunction
 ) => {
-  if (req.user?.role.role_name !== 'admin') {
-    return res.status(403).json({ message: 'Доступ запрещен' });
+  if (req.user?.role !== 'admin') {
+    return res
+      .status(403)
+      .json({ message: 'Доступ запрещен. Требуется роль администратора.' });
   }
   next();
 };

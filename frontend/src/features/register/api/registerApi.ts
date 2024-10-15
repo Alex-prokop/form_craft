@@ -5,7 +5,7 @@ import { API_URL } from '../../../constants';
 export const registerUser = async (data: RegisterFormInputs) => {
   try {
     const response = await axios.post(`${API_URL}/auth/register`, data);
-    return response.data; // Вернуть ответ сервера
+    return response.data;
   } catch (error) {
     // Обработка ошибок
     if (axios.isAxiosError(error) && error.response) {
