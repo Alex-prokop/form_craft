@@ -1,34 +1,49 @@
-import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState } from 'react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 const AdminDashboard: React.FC = () => {
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(location.pathname);
+
+  const handleTabClick = (path: string) => {
+    setActiveTab(path);
+  };
+
   return (
-    <div className="d-flex">
-      {/* Боковая панель */}
-      <nav className="admin-sidebar bg-light vh-100 p-3">
-        <h4 className="mb-4">Админ-панель</h4>
-        <ul className="nav flex-column">
-          <li className="nav-item mb-2">
-            <Link to="users" className="nav-link">
-              Управление пользователями
-            </Link>
-          </li>
-          <li className="nav-item mb-2">
-            <Link to="templates" className="nav-link">
-              Редактирование шаблонов
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="forms" className="nav-link">
-              Просмотр заполненных форм
-            </Link>
-          </li>
-        </ul>
-      </nav>
+    <div>
+      {/* Навигация с табами */}
+      <ul className="nav nav-tabs">
+        <li className="nav-item">
+          <Link
+            to="users"
+            className={`nav-link ${activeTab === '/users' ? 'active' : ''}`}
+            onClick={() => handleTabClick('/users')}
+          >
+            Управление пользователями
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link
+            to="templates"
+            className={`nav-link ${activeTab === '/templates' ? 'active' : ''}`}
+            onClick={() => handleTabClick('/templates')}
+          >
+            Редактирование шаблонов
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link
+            to="forms"
+            className={`nav-link ${activeTab === '/forms' ? 'active' : ''}`}
+            onClick={() => handleTabClick('/forms')}
+          >
+            Просмотр заполненных форм
+          </Link>
+        </li>
+      </ul>
 
       {/* Основное содержимое */}
-      <main className="admin-content p-4 flex-grow-1">
+      <main className="admin-content p-4">
         <Outlet />
       </main>
     </div>

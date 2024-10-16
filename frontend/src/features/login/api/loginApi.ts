@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode'; // Правильный импорт
+import { jwtDecode } from 'jwt-decode';
 import { LoginFormInputs } from '../types/LoginFormInputs';
 import { DecodedToken } from '../types/DecodedToken';
 import { API_URL } from '../../../constants';

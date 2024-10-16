@@ -5,7 +5,6 @@ export interface AuthenticatedRequest extends Request {
   user?: { id: number; role: string };
 }
 
-// Вспомогательная функция для извлечения токена
 const parseToken = (authHeader: string | undefined): string | null => {
   if (authHeader && authHeader.startsWith('Bearer ')) {
     return authHeader.split(' ')[1];
