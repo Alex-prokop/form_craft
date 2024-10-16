@@ -1,45 +1,65 @@
-import { AppDataSource } from '../config/ormconfig';
-import { User } from '../entities/User';
+import {
+  findAllActiveUsers,
+  findActiveUserById,
+  softDeleteUser,
+  blockUser,
+  unblockUser,
+  userRepository,
+  changeUserRole,
+} from '../repositories/userRepository';
 import bcrypt from 'bcryptjs';
 
-export const getAllUsers = async () => {
-  const userRepository = AppDataSource.getRepository(User);
-  return await userRepository.find();
+// Получение всех активных пользователей (не удалённых и не заблокированных)
+export const getAllUsersService = async () => {
+  return await findAllActiveUsers();
 };
 
-export const getUserById = async (id: number) => {
-  const userRepository = AppDataSource.getRepository(User);
-  return await userRepository.findOneBy({ id });
+// Получение активного пользователя по ID (не удалённого и не заблокированного)
+export const getUserByIdService = async (id: number) => {
+  return await findActiveUserById(id);
 };
 
-export const updateUser = async (
+// Обновление данных пользователя
+export const updateUserService = async (
   id: number,
   updates: { username?: string; email?: string; password?: string }
 ) => {
-  const userRepository = AppDataSource.getRepository(User);
-  const user = await userRepository.findOneBy({ id });
+  const user = await findActiveUserById(id); // Ищем только активного пользователя
 
-  if (!user) {
-    throw new Error('Пользователь не найден');
+  if (updates.username) {
+    user.username = updates.username;
   }
 
-  user.username = updates.username || user.username;
-  user.email = updates.email || user.email;
+  if (updates.email) {
+    user.email = updates.email;
+  }
 
   if (updates.password) {
     user.password_hash = await bcrypt.hash(updates.password, 10);
   }
 
-  return await userRepository.save(user);
+  return await userRepository.save(user); // Сохраняем изменения через userRepository
 };
 
-export const deleteUser = async (id: number) => {
-  const userRepository = AppDataSource.getRepository(User);
-  const user = await userRepository.findOneBy({ id });
+// Мягкое удаление пользователя (логическое удаление)
+export const deleteUserService = async (id: number) => {
+  return await softDeleteUser(id); // Используем мягкое удаление
+};
 
-  if (!user) {
-    throw new Error('Пользователь не найден');
-  }
+// Блокировка пользователя
+export const blockUserService = async (id: number) => {
+  return await blockUser(id);
+};
 
-  return await userRepository.remove(user);
+// Разблокировка пользователя
+export const unblockUserService = async (id: number) => {
+  return await unblockUser(id);
+};
+
+// Сервис для изменения роли пользователя
+export const changeUserRoleService = async (
+  userId: number,
+  newRoleName: string
+) => {
+  return await changeUserRole(userId, newRoleName);
 };

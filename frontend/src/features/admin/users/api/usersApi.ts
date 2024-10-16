@@ -1,95 +1,93 @@
 import axios from 'axios';
 import { API_URL } from '../../../../constants';
+import { User } from '../types/userTypes';
 
-// Получение списка пользователей
-export const getUsers = async () => {
+const getAuthHeaders = (): Record<string, string> => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Токен не найден');
+  return {
+    Authorization: `Bearer ${token}`,
+  };
+};
+
+const handleRequestError = (error: unknown, defaultMessage: string): never => {
+  if (axios.isAxiosError(error) && error.response) {
+    throw new Error(error.response.data.message || defaultMessage);
+  }
+  throw new Error('Ошибка сети');
+};
+
+const apiRequest = async <T>(
+  method: 'get' | 'post' | 'put' | 'delete',
+  url: string,
+  data?: unknown
+): Promise<T | undefined> => {
   try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error('Токен не найден');
-
-    const response = await axios.get(`${API_URL}/api/users`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const headers = getAuthHeaders();
+    const response = await axios({
+      method,
+      url: `${API_URL}${url}`,
+      headers,
+      data,
     });
     return response.data;
   } catch (error) {
-    // Обработка ошибок
-    if (axios.isAxiosError(error) && error.response) {
-      throw new Error(
-        error.response.data.message ||
-          'Ошибка при получении списка пользователей'
-      );
-    }
-    throw new Error('Ошибка сети');
+    handleRequestError(
+      error,
+      `Ошибка при выполнении запроса ${method.toUpperCase()} ${url}`
+    );
   }
+  return undefined;
 };
 
-// Получение пользователя по ID
-export const getUserById = async (id: number) => {
-  try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error('Токен не найден');
-
-    const response = await axios.get(`${API_URL}/api/users/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data; // Вернуть информацию о пользователе
-  } catch (error) {
-    // Обработка ошибок
-    if (axios.isAxiosError(error) && error.response) {
-      throw new Error(
-        error.response.data.message || 'Ошибка при получении пользователя'
-      );
-    }
-    throw new Error('Ошибка сети');
-  }
+export const getUsers = async (): Promise<User[]> => {
+  return apiRequest<User[]>('get', '/api/users') as Promise<User[]>;
 };
 
-// Обновление данных пользователя
-export const updateUser = async (id: number, userData: object) => {
-  try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error('Токен не найден');
-
-    const response = await axios.put(`${API_URL}/api/users/${id}`, userData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    // Обработка ошибок
-    if (axios.isAxiosError(error) && error.response) {
-      throw new Error(
-        error.response.data.message || 'Ошибка при обновлении пользователя'
-      );
-    }
-    throw new Error('Ошибка сети');
-  }
+export const getUserById = async (id: number): Promise<User> => {
+  return apiRequest<User>('get', `/api/users/${id}`) as Promise<User>;
 };
 
-// Удаление пользователя
-export const deleteUser = async (id: number) => {
-  try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error('Токен не найден');
+export const updateUser = async (
+  id: number,
+  userData: Partial<User>
+): Promise<User> => {
+  return apiRequest<User>('put', `/api/users/${id}`, userData) as Promise<User>;
+};
 
-    const response = await axios.delete(`${API_URL}/api/users/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    // Обработка ошибок
-    if (axios.isAxiosError(error) && error.response) {
-      throw new Error(
-        error.response.data.message || 'Ошибка при удалении пользователя'
-      );
-    }
-    throw new Error('Ошибка сети');
-  }
+export const deleteUser = async (id: number): Promise<{ message: string }> => {
+  return apiRequest<{ message: string }>(
+    'delete',
+    `/api/users/${id}`
+  ) as Promise<{ message: string }>;
+};
+
+export const blockUser = async (id: number): Promise<{ message: string }> => {
+  return apiRequest<{ message: string }>(
+    'post',
+    `/api/users/${id}/block`
+  ) as Promise<{ message: string }>;
+};
+
+export const unblockUser = async (id: number): Promise<{ message: string }> => {
+  return apiRequest<{ message: string }>(
+    'post',
+    `/api/users/${id}/unblock`
+  ) as Promise<{ message: string }>;
+};
+
+export const changeUserRole = async (
+  id: number,
+  newRole: string
+): Promise<User> => {
+  return apiRequest<User>('put', `/api/users/${id}/role`, {
+    newRole,
+  }) as Promise<User>;
+};
+
+export const removeAdmin = async (id: number): Promise<{ message: string }> => {
+  return apiRequest<{ message: string }>(
+    'post',
+    `/api/users/${id}/remove-admin`
+  ) as Promise<{ message: string }>;
 };

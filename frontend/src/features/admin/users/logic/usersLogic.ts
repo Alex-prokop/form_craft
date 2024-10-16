@@ -1,45 +1,77 @@
-import { getUsers, getUserById, updateUser, deleteUser } from '../api/usersApi';
+import {
+  getUsers,
+  blockUser,
+  unblockUser,
+  changeUserRole,
+  deleteUser,
+  getUserById,
+  updateUser,
+} from '../api/usersApi';
 
-// Получение списка пользователей с обработкой ошибок
+const handleUserOperation = async <T>(
+  operation: () => Promise<T>,
+  errorMessage: string
+): Promise<T> => {
+  try {
+    return await operation();
+  } catch (error) {
+    console.error(errorMessage, error);
+    throw error;
+  }
+};
+
 export const fetchUsers = async () => {
-  try {
-    const users = await getUsers();
-    return users;
-  } catch (error) {
-    console.error('Ошибка при получении списка пользователей:', error);
-    throw error;
-  }
+  return handleUserOperation(
+    getUsers,
+    'Ошибка при получении списка пользователей'
+  );
 };
 
-// Получение данных пользователя по ID
 export const fetchUserById = async (id: number) => {
-  try {
-    const user = await getUserById(id);
-    return user;
-  } catch (error) {
-    console.error('Ошибка при получении данных пользователя:', error);
-    throw error;
-  }
+  return handleUserOperation(
+    () => getUserById(id),
+    'Ошибка при получении данных пользователя'
+  );
 };
 
-// Обновление пользователя
 export const modifyUser = async (id: number, userData: object) => {
-  try {
-    const updatedUser = await updateUser(id, userData);
-    return updatedUser;
-  } catch (error) {
-    console.error('Ошибка при обновлении пользователя:', error);
-    throw error;
-  }
+  return handleUserOperation(
+    () => updateUser(id, userData),
+    'Ошибка при обновлении пользователя'
+  );
 };
 
-// Удаление пользователя
 export const removeUser = async (id: number) => {
-  try {
-    const result = await deleteUser(id);
-    return result;
-  } catch (error) {
-    console.error('Ошибка при удалении пользователя:', error);
-    throw error;
-  }
+  return handleUserOperation(
+    () => deleteUser(id),
+    'Ошибка при удалении пользователя'
+  );
+};
+
+export const blockUserById = async (id: number) => {
+  return handleUserOperation(
+    () => blockUser(id),
+    'Ошибка при блокировке пользователя'
+  );
+};
+
+export const unblockUserById = async (id: number) => {
+  return handleUserOperation(
+    () => unblockUser(id),
+    'Ошибка при разблокировке пользователя'
+  );
+};
+
+export const makeAdmin = async (id: number) => {
+  return handleUserOperation(
+    () => changeUserRole(id, 'admin'),
+    'Ошибка при назначении роли администратора'
+  );
+};
+
+export const revokeAdmin = async (id: number) => {
+  return handleUserOperation(
+    () => changeUserRole(id, 'user'),
+    'Ошибка при снятии роли администратора'
+  );
 };

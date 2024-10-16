@@ -1,5 +1,8 @@
 import { authSwagger } from './authSwagger';
-import { userSwagger } from './userSwagger';
+import { userRoleSwagger } from './users/userRoleSwagger';
+import { userGetSwagger } from './users/userGetSwagger';
+import { userUpdateSwagger } from './users/userUpdateSwagger';
+import { userBlockSwagger } from './users/userBlockSwagger';
 
 export const swaggerDocument = {
   openapi: '3.0.0',
@@ -9,7 +12,10 @@ export const swaggerDocument = {
   },
   paths: {
     ...authSwagger,
-    ...userSwagger,
+    ...userBlockSwagger,
+    ...userRoleSwagger,
+    ...userGetSwagger,
+    ...userUpdateSwagger,
   },
   components: {
     securitySchemes: {

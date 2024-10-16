@@ -5,7 +5,6 @@ import {
 } from '../repositories/userRepository';
 import { UserExistsError } from '../errors/errors';
 
-// Проверки на валидность данных
 export const registerValidation = [
   body('username')
     .isString()
@@ -14,10 +13,8 @@ export const registerValidation = [
     .custom(async (username) => {
       const existingUser = await findUserByUsername(username);
       if (existingUser) {
-        // Если пользователь с таким именем уже существует, выбрасываем ошибку
         throw new UserExistsError('Имя пользователя уже занято');
       }
-      // Если пользователь не найден, возвращаем true (нет ошибки)
       return true;
     }),
 
@@ -27,10 +24,8 @@ export const registerValidation = [
     .custom(async (email) => {
       const existingEmail = await findUserByEmail(email);
       if (existingEmail) {
-        // Если пользователь с таким email уже существует, выбрасываем ошибку
         throw new UserExistsError('Email уже занят');
       }
-      // Если пользователь не найден, возвращаем true (нет ошибки)
       return true;
     }),
 
