@@ -9,6 +9,14 @@ import {
 } from 'typeorm';
 import { Template } from './Template';
 
+// Перечисление для типов вопросов
+export enum QuestionType {
+  SINGLE_LINE_STRING = 'single_line_string',
+  MULTI_LINE_TEXT = 'multi_line_text',
+  POSITIVE_INTEGER = 'positive_integer',
+  CHECKBOX = 'checkbox',
+}
+
 @Entity({ name: 'questions' })
 export class Question {
   @PrimaryGeneratedColumn()
@@ -19,40 +27,25 @@ export class Question {
   template!: Template;
 
   @Column({
-    type: 'varchar',
-    length: 50,
+    type: 'enum',
+    enum: QuestionType,
     nullable: false,
   })
-  question_type!: string;
+  question_type!: QuestionType;
 
-  @Column({
-    type: 'varchar',
-    nullable: false,
-  })
+  @Column({ type: 'varchar', nullable: false })
   title!: string;
 
-  @Column({
-    type: 'text',
-    nullable: true,
-  })
+  @Column({ type: 'text', nullable: true })
   description!: string;
 
-  @Column({
-    type: 'boolean',
-    default: true,
-  })
+  @Column({ type: 'boolean', default: true })
   show_in_results!: boolean;
 
-  @Column({
-    type: 'int',
-    nullable: false,
-  })
+  @Column({ type: 'int', nullable: false })
   question_order!: number;
 
-  @Column({
-    type: 'boolean',
-    default: false,
-  })
+  @Column({ type: 'boolean', default: false })
   is_deleted!: boolean;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })

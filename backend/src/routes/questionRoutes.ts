@@ -1,16 +1,21 @@
-// routes/questionRoutes.ts
 import { Router } from 'express';
 import {
   getQuestionsByTemplate,
   createQuestion,
+  updateQuestion,
+  deleteQuestion,
 } from '../controllers/questionController';
+import { authMiddleware } from '../middlewares/authMiddleware';
 
 const router = Router();
 
-// Получить все вопросы для шаблона
-router.get('/templates/:templateId/questions', getQuestionsByTemplate);
-
-// Создать новый вопрос для шаблона
-router.post('/templates/:templateId/questions', createQuestion);
+router.get(
+  '/templates/:templateId/questions',
+  authMiddleware,
+  getQuestionsByTemplate
+);
+router.post('/templates/:templateId/questions', authMiddleware, createQuestion);
+router.put('/questions/:questionId', authMiddleware, updateQuestion);
+router.delete('/questions/:questionId', authMiddleware, deleteQuestion);
 
 export default router;

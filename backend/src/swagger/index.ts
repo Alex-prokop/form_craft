@@ -3,6 +3,9 @@ import { userRoleSwagger } from './users/userRoleSwagger';
 import { userGetSwagger } from './users/userGetSwagger';
 import { userUpdateSwagger } from './users/userUpdateSwagger';
 import { userBlockSwagger } from './users/userBlockSwagger';
+import { templateSwagger } from './templateSwagger';
+import { topicSwagger } from './topicSwagger';
+import { questionSwagger, questionSchema } from './questionSwagger';
 
 export const swaggerDocument = {
   openapi: '3.0.0',
@@ -16,8 +19,14 @@ export const swaggerDocument = {
     ...userRoleSwagger,
     ...userGetSwagger,
     ...userUpdateSwagger,
+    ...templateSwagger,
+    ...topicSwagger,
+    ...questionSwagger,
   },
   components: {
+    schemas: {
+      ...questionSchema, // Подключение схемы для вопросов
+    },
     securitySchemes: {
       bearerAuth: {
         type: 'http',

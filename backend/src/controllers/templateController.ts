@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import { AuthenticatedRequest } from '../middlewares/authMiddleware';
+
 import {
   getAllTemplates as getAllTemplatesService,
   createTemplate as createTemplateService,
@@ -21,23 +23,32 @@ export const getAllTemplates = async (
 };
 
 export const createTemplate = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ) => {
-  const { authorId, title, description, topicId } = req.body;
+  const { title, description, topicId } = req.body;
+  const userId = req.user?.id;
 
   try {
-    const author = await getUserByIdService(authorId);
+    // Проверка наличия авторизованного пользователя
+    if (!userId) {
+      return res.status(401).json({ message: 'Пользователь не авторизован' });
+    }
+
+    // Получение пользователя по ID из токена
+    const author = await getUserByIdService(userId);
     if (!author) {
-      return res.status(404).json({ message: 'Author not found' });
+      return res.status(404).json({ message: 'Автор не найден' });
     }
 
-    const topic = await findTopicById(topicId); // Убрали topicRepository
+    // Проверка наличия темы
+    const topic = await findTopicById(topicId);
     if (!topic) {
-      return res.status(404).json({ message: 'Topic not found' });
+      return res.status(404).json({ message: 'Тема не найдена' });
     }
 
+    // Создание шаблона с использованием ID авторизованного пользователя
     const newTemplate = await createTemplateService(
       author,
       title,
