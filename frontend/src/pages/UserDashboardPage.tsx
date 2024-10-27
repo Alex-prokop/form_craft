@@ -1,7 +1,7 @@
 // pages/UserDashboardPage.tsx
 
 import React from 'react';
-import { Outlet } from 'react-router-dom'; // Для рендеринга вложенных маршрутов
+import { Outlet } from 'react-router-dom';
 import UserDashboardTabs from '../features/user/UserDashboardTabs';
 
 const UserDashboardPage: React.FC = () => {

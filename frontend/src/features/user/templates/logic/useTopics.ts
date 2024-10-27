@@ -25,5 +25,5 @@ export const useTopics = () => {
     loadTopics();
   }, [loadTopics]);
 
-  return { topics, loading, error };
+  return { topics, loading, error, loadTopics };
 };

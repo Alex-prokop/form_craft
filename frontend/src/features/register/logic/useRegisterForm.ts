@@ -16,10 +16,16 @@ export const useRegisterForm = () => {
     try {
       console.log('Отправка данных:', data);
       const response = await registerUser(data);
-      console.log('Успешная регистрация:', response);
 
+      if (response.token) {
+        // Проверка наличия токена в ответе
+        localStorage.setItem('token', response.token); // Сохранение токена
+        console.log('Токен сохранён:', response.token);
+      }
+
+      console.log('Успешная регистрация:', response);
       console.log('Перенаправление на /user');
-      navigate('/user');
+      navigate('/user'); // Редирект на /user
     } catch (error) {
       console.error('Ошибка регистрации:', error);
       // Здесь можно добавить обработку ошибки и сообщение для пользователя

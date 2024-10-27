@@ -1,25 +1,24 @@
-import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
-import QuestionCreationModal from './QuestionCreationModal';
-import { Question } from '../../types/templateTypes';
+// import React, { useState } from 'react';
+// import { Button } from 'react-bootstrap';
+// import { Question } from '../../types/templateTypes';
 
-interface AddQuestionDropdownProps {
-  onAdd: (newQuestion: Omit<Question, 'id'>) => void;
-}
+// interface AddQuestionDropdownProps {
+//   onAdd: (newQuestion: Omit<Question, 'id'>) => void;
+// }
 
-const AddQuestionDropdown: React.FC<AddQuestionDropdownProps> = ({ onAdd }) => {
-  const [showModal, setShowModal] = useState(false);
+// const AddQuestionDropdown: React.FC<AddQuestionDropdownProps> = ({ onAdd }) => {
+//   const [showModal, setShowModal] = useState(false);
 
-  return (
-    <>
-      <Button onClick={() => setShowModal(true)}>Добавить вопрос</Button>
-      <QuestionCreationModal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        onAdd={onAdd}
-      />
-    </>
-  );
-};
+//   return (
+//     <>
+//       <Button onClick={() => setShowModal(true)}>Добавить вопрос</Button>
+//       <QuestionCreationModal
+//         show={showModal}
+//         onClose={() => setShowModal(false)}
+//         onAdd={onAdd}
+//       />
+//     </>
+//   );
+// };
 
-export default AddQuestionDropdown;
+// export default AddQuestionDropdown;

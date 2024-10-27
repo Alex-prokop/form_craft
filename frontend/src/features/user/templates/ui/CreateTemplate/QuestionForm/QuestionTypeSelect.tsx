@@ -2,8 +2,8 @@ import React from 'react';
 import { Question } from '../../../types/templateTypes';
 
 interface QuestionTypeSelectProps {
-  selectedType: Question['type'];
-  onTypeChange: (newType: Question['type']) => void; // Обновлено
+  selectedType: Question['question_type'];
+  onTypeChange: (newType: Question['question_type']) => void;
 }
 
 const QuestionTypeSelect: React.FC<QuestionTypeSelectProps> = ({
@@ -13,7 +13,9 @@ const QuestionTypeSelect: React.FC<QuestionTypeSelectProps> = ({
   return (
     <select
       value={selectedType}
-      onChange={(e) => onTypeChange(e.target.value as Question['type'])} // Приведение типа
+      onChange={(e) =>
+        onTypeChange(e.target.value as Question['question_type'])
+      }
       className="form-control">
       <option value="text">Текст</option>
       <option value="textarea">Многострочный текст</option>

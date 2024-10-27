@@ -3,9 +3,11 @@ import { userRoleSwagger } from './users/userRoleSwagger';
 import { userGetSwagger } from './users/userGetSwagger';
 import { userUpdateSwagger } from './users/userUpdateSwagger';
 import { userBlockSwagger } from './users/userBlockSwagger';
-import { templateSwagger } from './templateSwagger';
+import { templateSwagger } from './templates/templateSwagger';
+import { templateSchema } from './templates/templateSchema';
 import { topicSwagger } from './topicSwagger';
-import { questionSwagger, questionSchema } from './questionSwagger';
+import { questionSchema } from './questions/questionSchema';
+import { questionSwagger } from './questions/questionSwagger';
 
 export const swaggerDocument = {
   openapi: '3.0.0',
@@ -25,7 +27,8 @@ export const swaggerDocument = {
   },
   components: {
     schemas: {
-      ...questionSchema, // Подключение схемы для вопросов
+      ...templateSchema,
+      ...questionSchema,
     },
     securitySchemes: {
       bearerAuth: {

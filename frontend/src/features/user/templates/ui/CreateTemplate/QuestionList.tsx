@@ -40,9 +40,10 @@ const QuestionList: React.FC<QuestionListProps> = ({
                   className="mb-3">
                   <QuestionForm
                     question={question}
-                    index={index}
-                    handleQuestionChange={handleQuestionChange}
-                    handleDeleteQuestion={handleDeleteQuestion}
+                    handleQuestionChange={(field, value) => {
+                      handleQuestionChange(index, field, value);
+                    }}
+                    handleDeleteQuestion={() => handleDeleteQuestion(index)}
                   />
                 </div>
               )}

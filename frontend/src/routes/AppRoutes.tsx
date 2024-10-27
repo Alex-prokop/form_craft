@@ -12,6 +12,7 @@ import LoadingPage from '../pages/LoadingPage';
 
 import { userRoutes } from './userRoutes';
 import { adminRoutes } from './adminRoutes';
+import PrivateRoute from './PrivateRoute';
 
 const AppRoutes: React.FC = () => {
   const routes = [
@@ -29,7 +30,7 @@ const AppRoutes: React.FC = () => {
     },
     {
       path: '/template/create',
-      element: <TemplateCreatePage />,
+      element: <PrivateRoute element={<TemplateCreatePage />} />,
     },
     {
       path: '/form/:id',
@@ -37,7 +38,7 @@ const AppRoutes: React.FC = () => {
     },
     {
       path: '/form/:id/results',
-      element: <FormResultsPage />,
+      element: <PrivateRoute element={<FormResultsPage />} />,
     },
     {
       path: '/error',
@@ -51,10 +52,16 @@ const AppRoutes: React.FC = () => {
       path: '*',
       element: <NotFoundPage />,
     },
-    // Встраиваем маршруты пользователя
-    ...userRoutes,
-    // Встраиваем маршруты администратора
-    ...adminRoutes,
+    // Приватные маршруты для пользователей
+    ...userRoutes.map((route) => ({
+      ...route,
+      element: <PrivateRoute element={route.element} />,
+    })),
+    // Приватные маршруты для админов
+    ...adminRoutes.map((route) => ({
+      ...route,
+      element: <PrivateRoute element={route.element} />,
+    })),
   ];
 
   const element = useRoutes(routes);

@@ -8,17 +8,17 @@ const TemplateCreationForm: React.FC<{ onClose: () => void }> = ({
 }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [topic, setTopic] = useState('');
+  const [topicId, setTopicId] = useState<number | null>(null); // Сохраняем topicId как number
 
   const { addTemplate } = useTemplates();
 
   const handleSubmit = async () => {
-    if (!title || !topic) {
+    if (!title || topicId === null) {
       alert('Название и тема обязательны.');
       return;
     }
 
-    const newTemplateData = { title, description, topic };
+    const newTemplateData = { title, description, topicId }; // Используем topicId
 
     try {
       await addTemplate(newTemplateData);
@@ -37,8 +37,8 @@ const TemplateCreationForm: React.FC<{ onClose: () => void }> = ({
         description={description}
         setTitle={setTitle}
         setDescription={setDescription}
-        topic={topic}
-        setTopic={setTopic}
+        topicId={topicId}
+        setTopicId={setTopicId}
       />
       <SaveCancelButtons handleSubmit={handleSubmit} handleCancel={onClose} />
     </div>

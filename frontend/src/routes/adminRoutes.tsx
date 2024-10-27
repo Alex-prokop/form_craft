@@ -1,18 +1,21 @@
 import React from 'react';
-import { RouteObject } from 'react-router-dom';
 import AdminDashboardPage from '../pages/AdminDashboardPage';
 import UserManagement from '../features/admin/users/ui/UserManagement';
 import TemplateManagement from '../features/admin/templates/ui/TemplateManagement';
 import FormReview from '../features/admin/forms/ui/FormReview';
+import PrivateRoute from './PrivateRoute';
 
-export const adminRoutes: RouteObject[] = [
+export const adminRoutes = [
   {
     path: '/admin',
-    element: <AdminDashboardPage />,
+    element: <PrivateRoute element={<AdminDashboardPage />} />,
     children: [
-      { path: 'users', element: <UserManagement /> },
-      { path: 'templates', element: <TemplateManagement /> },
-      { path: 'forms', element: <FormReview /> },
+      { path: 'users', element: <PrivateRoute element={<UserManagement />} /> },
+      {
+        path: 'templates',
+        element: <PrivateRoute element={<TemplateManagement />} />,
+      },
+      { path: 'forms', element: <PrivateRoute element={<FormReview />} /> },
     ],
   },
 ];
