@@ -8,23 +8,19 @@ export const roleRepository = AppDataSource.getRepository(Role);
 
 // Вспомогательная функция для поиска пользователя по критериям
 const findUser = async (criteria: Partial<User>) => {
-  const user = await userRepository.findOne({ where: criteria });
-
-  if (!user) {
-    throw new UserNotFoundError('Пользователь не найден');
-  }
-
-  return user;
+  return await userRepository.findOne({ where: criteria });
 };
 
 // Используется для проверки существования пользователя по имени при регистрации
 export const findUserByUsername = async (username: string) => {
-  return await findUser({ username });
+  const user = await userRepository.findOne({ where: { username } });
+  return user; // Вернет null, если пользователь не найден
 };
 
 // Используется для проверки существования пользователя по email при регистрации
 export const findUserByEmail = async (email: string) => {
-  return await findUser({ email });
+  const user = await userRepository.findOne({ where: { email } });
+  return user; // Вернет null, если пользователь не найден
 };
 
 // Создание нового пользователя
@@ -58,6 +54,10 @@ export const findUserWithRoleByEmail = async (email: string) => {
 export const softDeleteUser = async (id: number) => {
   const user = await findUser({ id });
 
+  if (!user) {
+    throw new UserNotFoundError('Пользователь не найден');
+  }
+
   user.is_deleted = true;
   return await userRepository.save(user);
 };
@@ -66,6 +66,10 @@ export const softDeleteUser = async (id: number) => {
 export const blockUser = async (id: number) => {
   const user = await findUser({ id });
 
+  if (!user) {
+    throw new UserNotFoundError('Пользователь не найден');
+  }
+
   user.is_blocked = true;
   return await userRepository.save(user);
 };
@@ -73,6 +77,10 @@ export const blockUser = async (id: number) => {
 // Разблокировка пользователя
 export const unblockUser = async (id: number) => {
   const user = await findUser({ id });
+
+  if (!user) {
+    throw new UserNotFoundError('Пользователь не найден');
+  }
 
   user.is_blocked = false;
   return await userRepository.save(user);
@@ -88,7 +96,13 @@ export const findAllActiveUsers = async () => {
 
 // Поиск активного пользователя по ID
 export const findActiveUserById = async (id: number) => {
-  return await findUser({ id, is_deleted: false, is_blocked: false });
+  const user = await findUser({ id, is_deleted: false, is_blocked: false });
+
+  if (!user) {
+    throw new UserNotFoundError('Активный пользователь не найден');
+  }
+
+  return user;
 };
 
 // Изменение роли пользователя

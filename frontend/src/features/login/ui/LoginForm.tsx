@@ -35,7 +35,9 @@ export const LoginForm: React.FC = () => {
           id="email"
           type="email"
           className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-          defaultValue="admin@example.com" // Значение по умолчанию
+          // Значение по умолчанию
+          defaultValue="user@example22.com"
+          // defaultValue="admin@example.com"
           {...register('email', {
             required: 'Email is required',
             pattern: {
@@ -57,7 +59,9 @@ export const LoginForm: React.FC = () => {
           id="password"
           type="password"
           className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-          defaultValue="adminPassword123" // Значение по умолчанию
+          // Значение по умолчанию
+          defaultValue="string22"
+          // defaultValue="adminPassword123"
           {...register('password', { required: 'Password is required' })}
         />
         {errors.password && (

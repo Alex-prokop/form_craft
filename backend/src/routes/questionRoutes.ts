@@ -1,16 +1,32 @@
-// routes/questionRoutes.ts
 import { Router } from 'express';
 import {
   getQuestionsByTemplate,
+  getQuestionById,
   createQuestion,
+  updateQuestion,
+  deleteQuestion,
 } from '../controllers/questionController';
+import { authMiddleware } from '../middlewares/authMiddleware';
 
 const router = Router();
 
-// Получить все вопросы для шаблона
-router.get('/templates/:templateId/questions', getQuestionsByTemplate);
+// Получение всех вопросов по шаблону
+router.get(
+  '/templates/:templateId/questions',
+  authMiddleware,
+  getQuestionsByTemplate
+);
 
-// Создать новый вопрос для шаблона
-router.post('/templates/:templateId/questions', createQuestion);
+// Получение вопроса по ID
+router.get('/questions/:questionId', authMiddleware, getQuestionById);
+
+// Создание нового вопроса
+router.post('/templates/:templateId/questions', authMiddleware, createQuestion);
+
+// Обновление вопроса
+router.put('/questions/:questionId', authMiddleware, updateQuestion);
+
+// Удаление вопроса (мягкое удаление)
+router.delete('/questions/:questionId', authMiddleware, deleteQuestion);
 
 export default router;

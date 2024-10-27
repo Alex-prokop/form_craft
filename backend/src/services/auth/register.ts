@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { createUser, findUserByEmail } from '../../repositories/userRepository';
 import { findRoleByName } from '../../repositories/roleRepository';
 import { UserExistsError } from '../../errors/errors';
+import { generateJwtToken } from '../../utils/jwtUtils';
 
 export const register = async (
   username: string,
@@ -27,5 +28,15 @@ export const register = async (
     role: userRole,
   });
 
-  return { message: 'Пользователь успешно зарегистрирован', user: newUser };
+  const token = generateJwtToken(
+    newUser.id,
+    newUser.username,
+    userRole.role_name
+  );
+
+  return {
+    message: 'Пользователь успешно зарегистрирован',
+    user: newUser,
+    token,
+  };
 };

@@ -18,13 +18,11 @@ export const AppDataSource = new DataSource({
 
 // dotenv.config();
 
-// const isProduction = process.env.NODE_ENV === 'production';
-
-// export const AppDataSource = new DataSource({
+// export const LocalDataSource = new DataSource({
 //   type: 'postgres',
 //   url: process.env.DATABASE_URL,
-//   synchronize: true,  // В продакшене лучше использовать false, чтобы избежать нежелательных изменений схемы
-//   entities: isProduction ? ['dist/entities/**/*.js'] : ['src/entities/**/*.ts'],
-//   migrations: isProduction ? ['dist/migrations/**/*.js'] : ['src/migrations/**/*.ts'],
+//   synchronize: true,
+//   entities: ['src/entities/**/*.ts'], // Используем .ts файлы
+//   migrations: ['src/migrations/**/*.ts'], // Используем .ts миграции
 //   logging: true,
 // });

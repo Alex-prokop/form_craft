@@ -1,69 +1,117 @@
+import { Template } from '../entities/Template';
 import { Request, Response, NextFunction } from 'express';
+import { AuthenticatedRequest } from '../middlewares/authMiddleware';
 import {
   getAllTemplates as getAllTemplatesService,
-  createTemplate as createTemplateService,
+  getUserTemplates as getUserTemplatesService,
   getTemplateById as getTemplateByIdService,
+  createTemplate as createTemplateService,
+  updateTemplate as updateTemplateService,
+  deleteTemplate as deleteTemplateService,
 } from '../services/templateService';
-import { getUserByIdService } from '../services/userService';
-import { findTopicById } from '../services/topicService';
+import { User } from '../entities/User';
+import { Topic } from '../entities/Topic';
 
-export const getAllTemplates = async (
-  req: Request,
+// Универсальная функция для обработки запросов
+const handleRequest = async (
+  req: Request | AuthenticatedRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
+  serviceFunction: Function,
+  args: any[] = []
 ) => {
   try {
-    const templates = await getAllTemplatesService();
-    res.json(templates);
+    const result = await serviceFunction(...args);
+    if (result === null || result === undefined) {
+      return res.status(404).json({ message: 'Ресурс не найден' });
+    }
+    res.json(result);
   } catch (error) {
     next(error);
   }
 };
 
-export const createTemplate = async (
+// Получение всех шаблонов
+export const getAllTemplates = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { authorId, title, description, topicId } = req.body;
-
-  try {
-    const author = await getUserByIdService(authorId);
-    if (!author) {
-      return res.status(404).json({ message: 'Author not found' });
-    }
-
-    const topic = await findTopicById(topicId); // Убрали topicRepository
-    if (!topic) {
-      return res.status(404).json({ message: 'Topic not found' });
-    }
-
-    const newTemplate = await createTemplateService(
-      author,
-      title,
-      description,
-      topic
-    );
-    res.status(201).json(newTemplate);
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(req, res, next, getAllTemplatesService);
 };
 
-export const getTemplateById = async (
+// Получение шаблонов конкретного пользователя
+export const getUserTemplates = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const userId = req.user?.id;
+  if (!userId) {
+    return res.status(401).json({ message: 'Пользователь не авторизован' });
+  }
+  handleRequest(req, res, next, getUserTemplatesService, [userId]);
+};
+
+// Получение шаблона по ID
+export const getTemplateById = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const { templateId } = req.params;
+  handleRequest(req, res, next, getTemplateByIdService, [
+    parseInt(templateId, 10),
+  ]);
+};
 
-  try {
-    const template = await getTemplateByIdService(parseInt(templateId, 10));
-    if (!template) {
-      return res.status(404).json({ message: 'Template not found' });
-    }
-    res.json(template);
-  } catch (error) {
-    next(error);
+// Создание нового шаблона
+export const createTemplate = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { title, description, topicId } = req.body;
+  const userId = req.user?.id;
+  if (!userId) {
+    return res.status(401).json({ message: 'Пользователь не авторизован' });
   }
+  handleRequest(req, res, next, createTemplateService, [
+    { id: userId } as User,
+    title,
+    description,
+    { id: topicId } as Topic,
+  ]);
+};
+
+// Обновление шаблона
+export const updateTemplate = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { templateId } = req.params;
+  const { title, description, topicId } = req.body;
+  const updatedData: Partial<Template> = { title, description };
+
+  if (topicId) {
+    updatedData.topic = { id: topicId } as Topic;
+  }
+
+  handleRequest(req, res, next, updateTemplateService, [
+    parseInt(templateId, 10),
+    updatedData,
+  ]);
+};
+
+// Логическое удаление шаблона
+export const deleteTemplate = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { templateId } = req.params;
+  handleRequest(req, res, next, deleteTemplateService, [
+    parseInt(templateId, 10),
+  ]);
 };

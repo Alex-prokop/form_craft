@@ -3,7 +3,6 @@ import { useRoutes } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
-import UserDashboard from '../pages/UserDashboard';
 import TemplateCreatePage from '../pages/TemplateCreatePage';
 import FormFillPage from '../pages/FormFillPage';
 import FormResultsPage from '../pages/FormResultsPage';
@@ -11,7 +10,9 @@ import NotFoundPage from '../pages/NotFoundPage';
 import ErrorPage from '../pages/ErrorPage';
 import LoadingPage from '../pages/LoadingPage';
 
+import { userRoutes } from './userRoutes';
 import { adminRoutes } from './adminRoutes';
+import PrivateRoute from './PrivateRoute';
 
 const AppRoutes: React.FC = () => {
   const routes = [
@@ -28,12 +29,8 @@ const AppRoutes: React.FC = () => {
       element: <RegisterPage />,
     },
     {
-      path: '/user',
-      element: <UserDashboard />,
-    },
-    {
       path: '/template/create',
-      element: <TemplateCreatePage />,
+      element: <PrivateRoute element={<TemplateCreatePage />} />,
     },
     {
       path: '/form/:id',
@@ -41,7 +38,7 @@ const AppRoutes: React.FC = () => {
     },
     {
       path: '/form/:id/results',
-      element: <FormResultsPage />,
+      element: <PrivateRoute element={<FormResultsPage />} />,
     },
     {
       path: '/error',
@@ -55,7 +52,16 @@ const AppRoutes: React.FC = () => {
       path: '*',
       element: <NotFoundPage />,
     },
-    ...adminRoutes,
+    // Приватные маршруты для пользователей
+    ...userRoutes.map((route) => ({
+      ...route,
+      element: <PrivateRoute element={route.element} />,
+    })),
+    // Приватные маршруты для админов
+    ...adminRoutes.map((route) => ({
+      ...route,
+      element: <PrivateRoute element={route.element} />,
+    })),
   ];
 
   const element = useRoutes(routes);

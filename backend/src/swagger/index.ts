@@ -3,6 +3,11 @@ import { userRoleSwagger } from './users/userRoleSwagger';
 import { userGetSwagger } from './users/userGetSwagger';
 import { userUpdateSwagger } from './users/userUpdateSwagger';
 import { userBlockSwagger } from './users/userBlockSwagger';
+import { templateSwagger } from './templates/templateSwagger';
+import { templateSchema } from './templates/templateSchema';
+import { topicSwagger } from './topicSwagger';
+import { questionSchema } from './questions/questionSchema';
+import { questionSwagger } from './questions/questionSwagger';
 
 export const swaggerDocument = {
   openapi: '3.0.0',
@@ -16,8 +21,15 @@ export const swaggerDocument = {
     ...userRoleSwagger,
     ...userGetSwagger,
     ...userUpdateSwagger,
+    ...templateSwagger,
+    ...topicSwagger,
+    ...questionSwagger,
   },
   components: {
+    schemas: {
+      ...templateSchema,
+      ...questionSchema,
+    },
     securitySchemes: {
       bearerAuth: {
         type: 'http',
