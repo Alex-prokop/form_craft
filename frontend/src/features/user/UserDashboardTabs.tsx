@@ -32,6 +32,16 @@ const UserDashboardTabs: React.FC = () => {
             Мои заполненные формы
           </Link>
         </li>
+        <li className="nav-item">
+          <Link
+            to="/user/profile"
+            className={`nav-link ${
+              activeTab === '/user/profile' ? 'active' : ''
+            }`}
+            onClick={() => handleTabClick('/user/profile')}>
+            Профиль
+          </Link>
+        </li>
       </ul>
     </div>
   );

@@ -8,6 +8,7 @@ import { templateSchema } from './templates/templateSchema';
 import { topicSwagger } from './topicSwagger';
 import { questionSchema } from './questions/questionSchema';
 import { questionSwagger } from './questions/questionSwagger';
+import { salesforceSwagger } from './salesforce/salesforceSwagger';
 
 export const swaggerDocument = {
   openapi: '3.0.0',
@@ -24,6 +25,7 @@ export const swaggerDocument = {
     ...templateSwagger,
     ...topicSwagger,
     ...questionSwagger,
+    ...salesforceSwagger,
   },
   components: {
     schemas: {

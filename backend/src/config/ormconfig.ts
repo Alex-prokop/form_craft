@@ -13,16 +13,17 @@ export const AppDataSource = new DataSource({
 });
 1;
 
+// src/config/ormconfig.ts для добавления через скрипты
 // import { DataSource } from 'typeorm';
 // import dotenv from 'dotenv';
 
 // dotenv.config();
 
-// export const LocalDataSource = new DataSource({
+// export const AppDataSource = new DataSource({
 //   type: 'postgres',
 //   url: process.env.DATABASE_URL,
 //   synchronize: true,
-//   entities: ['src/entities/**/*.ts'], // Используем .ts файлы
-//   migrations: ['src/migrations/**/*.ts'], // Используем .ts миграции
+//   entities: ['src/entities/**/*.ts'],
+//   migrations: ['src/migrations/**/*.ts'],
 //   logging: true,
 // });

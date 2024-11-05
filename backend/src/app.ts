@@ -15,6 +15,7 @@ import tagRoutes from './routes/tagRoutes';
 import templateTagRoutes from './routes/templateTagRoutes';
 import commentRoutes from './routes/commentRoutes';
 import likeRoutes from './routes/likeRoutes';
+import salesforceRoutes from './routes/salesforceRoutes';
 
 const app = express();
 
@@ -26,9 +27,6 @@ app.use('/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/messages', messageRoutes);
 
-// Подключение Swagger UI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 // ---
 app.use('/api', topicRoutes);
 app.use('/api', templateRoutes);
@@ -39,6 +37,10 @@ app.use('/api', tagRoutes);
 app.use('/api', templateTagRoutes);
 app.use('/api', commentRoutes);
 app.use('/api', likeRoutes);
+app.use('/api', salesforceRoutes);
+
+// Подключение Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(errorHandler);
 
