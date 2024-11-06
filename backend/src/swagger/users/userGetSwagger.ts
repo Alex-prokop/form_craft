@@ -1,4 +1,5 @@
 import { successResponse, errorResponses } from './userCommonSchemas';
+
 export const userGetSwagger = {
   '/api/users': {
     get: {
@@ -6,29 +7,19 @@ export const userGetSwagger = {
       tags: ['Users'],
       security: [{ bearerAuth: [] }],
       responses: {
-        ...successResponse,
-        ...errorResponses,
-      },
-    },
-  },
-  '/api/users/{id}': {
-    get: {
-      summary: 'Получение пользователя по ID',
-      tags: ['Users'],
-      security: [{ bearerAuth: [] }],
-      parameters: [
-        {
-          name: 'id',
-          in: 'path',
-          required: true,
-          description: 'ID пользователя',
-          schema: {
-            type: 'integer',
+        200: {
+          description: 'Список пользователей',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: {
+                  $ref: '#/components/schemas/User',
+                },
+              },
+            },
           },
         },
-      ],
-      responses: {
-        ...successResponse,
         ...errorResponses,
       },
     },

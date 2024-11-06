@@ -19,7 +19,7 @@ const UserDashboardTabs: React.FC = () => {
               activeTab === '/user/templates' ? 'active' : ''
             }`}
             onClick={() => handleTabClick('/user/templates')}>
-            Мои формы
+            My forms
           </Link>
         </li>
         <li className="nav-item">
@@ -29,7 +29,17 @@ const UserDashboardTabs: React.FC = () => {
               activeTab === '/user/forms' ? 'active' : ''
             }`}
             onClick={() => handleTabClick('/user/forms')}>
-            Мои заполненные формы
+            My completed forms
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link
+            to="/user/profile"
+            className={`nav-link ${
+              activeTab === '/user/profile' ? 'active' : ''
+            }`}
+            onClick={() => handleTabClick('/user/profile')}>
+            Profile
           </Link>
         </li>
       </ul>
