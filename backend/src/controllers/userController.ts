@@ -28,6 +28,7 @@ export const getAllUsers = async (req: AuthenticatedRequest, res: Response) => {
 export const getUserById = async (req: AuthenticatedRequest, res: Response) => {
   const userId = parseInt(req.params.id);
 
+  // Проверка: администратор или сам пользователь
   if (req.user?.role !== 'admin' && req.user?.id !== userId) {
     return res.status(403).json({ message: 'Доступ запрещен' });
   }

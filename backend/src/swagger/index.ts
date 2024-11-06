@@ -1,8 +1,11 @@
 import { authSwagger } from './authSwagger';
 import { userRoleSwagger } from './users/userRoleSwagger';
 import { userGetSwagger } from './users/userGetSwagger';
+
 import { userUpdateSwagger } from './users/userUpdateSwagger';
 import { userBlockSwagger } from './users/userBlockSwagger';
+import { userSchema } from './users/userCommonSchemas';
+
 import { templateSwagger } from './templates/templateSwagger';
 import { templateSchema } from './templates/templateSchema';
 import { topicSwagger } from './topicSwagger';
@@ -29,6 +32,7 @@ export const swaggerDocument = {
   },
   components: {
     schemas: {
+      User: userSchema,
       ...templateSchema,
       ...questionSchema,
     },
