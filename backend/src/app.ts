@@ -16,6 +16,7 @@ import templateTagRoutes from './routes/templateTagRoutes';
 import commentRoutes from './routes/commentRoutes';
 import likeRoutes from './routes/likeRoutes';
 import salesforceRoutes from './routes/salesforceRoutes';
+import jiraRoutes from './routes/jiraRoutes';
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use('/api', templateTagRoutes);
 app.use('/api', commentRoutes);
 app.use('/api', likeRoutes);
 app.use('/api', salesforceRoutes);
+app.use('/api/jira', jiraRoutes);
 
 // Подключение Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

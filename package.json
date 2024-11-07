@@ -8,6 +8,10 @@
     "start:frontend": "npm --prefix ./frontend run dev:local"
   },
   "devDependencies": {
+    "@types/node-fetch": "^2.6.11",
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
   }
 }

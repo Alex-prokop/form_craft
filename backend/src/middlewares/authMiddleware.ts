@@ -1,8 +1,9 @@
+// src/middlewares/authMiddleware.ts
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 export interface AuthenticatedRequest extends Request {
-  user?: { id: number; role: string };
+  user?: { id: number; username: string; role: string };
 }
 
 const parseToken = (authHeader: string | undefined): string | null => {
@@ -28,10 +29,15 @@ export const authMiddleware = (
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
       id: number;
+      username: string;
       role: string;
     };
 
-    req.user = { id: decoded.id, role: decoded.role };
+    req.user = {
+      id: decoded.id,
+      username: decoded.username,
+      role: decoded.role,
+    };
 
     next();
   } catch (error) {
